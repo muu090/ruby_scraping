@@ -1,9 +1,17 @@
 require 'net/http'
 
-url = 'https://masayuki14.github.io/pit-news/' # 対象サイト指定
-uri = URI(url)
-html = Net::HTTP.get(uri) # 対象サイトのHTMLを取得しhtmlに代入
+# 対象サイトのHTMLを取得するメソッド
+def get_from(url)
+  Net::HTTP.get(URI(url))
+end
 
-file = File.open('pitnews.html', 'w') # pitnews.htmlというファイルを書き込みモードで開く（作成）
-file.write(html) # 作成したpitnews.htmlファイルに先の処理で取得したHTMLが代入されたhtmlの情報を書き込む
-file.close
+# 取得したHTMLを保存するメソッド
+def write_file(path, text)
+  File.open(path, 'w') { |file| file.write(text) }
+end
+
+# html = get_from('https://masayuki14.github.io/pit-news/')
+# write_file('pitnews.html', html)
+# ↓上の２行を１行で書くとこうなる
+write_file('pitnews.html', get_from('https://masayuki14.github.io/pit-news/'))
+
